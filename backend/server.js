@@ -24,6 +24,7 @@ const movies = [
     rating: 8.7,
     duration: '2h 46m',
     price: 320,
+    availableSeats: 42,
     poster: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=900&q=80',
     description: 'A monumental sci-fi epic spanning power, prophecy, and survival.'
   },
@@ -34,6 +35,7 @@ const movies = [
     rating: 8.2,
     duration: '1h 36m',
     price: 280,
+    availableSeats: 35,
     poster: 'https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?auto=format&fit=crop&w=900&q=80',
     description: 'A new emotional adventure as Riley faces the chaos of growing up.'
   },
@@ -44,6 +46,7 @@ const movies = [
     rating: 8.9,
     duration: '2h 56m',
     price: 350,
+    availableSeats: 24,
     poster: 'https://images.unsplash.com/photo-1513106580091-1d82408b8cd6?auto=format&fit=crop&w=900&q=80',
     description: 'Dark, tactical, and suspenseful as Gotham hunts its haunted hero.'
   },
@@ -54,6 +57,7 @@ const movies = [
     rating: 9.1,
     duration: '3h 0m',
     price: 390,
+    availableSeats: 18,
     poster: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=900&q=80',
     description: 'An intense story of genius, pressure, and the cost of innovation.'
   }
@@ -197,14 +201,24 @@ app.post('/api/bookings', authenticate, (req, res) => {
     return res.status(404).json({ message: 'Movie not found.' });
   }
 
+  const seatCount = Number(seats);
+
+  if (seatCount > movie.availableSeats) {
+    return res.status(400).json({
+      message: `Only ${movie.availableSeats} seats available for ${movie.title}.`
+    });
+  }
+
+  movie.availableSeats -= seatCount;
+
   const booking = {
     id: Date.now(),
     userId: req.user.id,
     movieId: Number(movieId),
     movieTitle: movie.title,
     showtime,
-    seats: Number(seats),
-    totalPrice: Number(totalPrice || movie.price * Number(seats)),
+    seats: seatCount,
+    totalPrice: Number(totalPrice || movie.price * seatCount),
     bookedAt: new Date().toISOString()
   };
 

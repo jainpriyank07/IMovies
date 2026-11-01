@@ -172,6 +172,18 @@ img {
   align-items: center;
 }
 
+.availability-tag,
+.availability-badge {
+  margin-top: 10px;
+  background: rgba(34, 197, 94, 0.15);
+  color: #bbf7d0;
+  border: 1px solid rgba(34, 197, 94, 0.4);
+  border-radius: 999px;
+  padding: 6px 10px;
+  display: inline-block;
+  font-size: 0.8rem;
+}
+
 .sidebar {
   display: flex;
   flex-direction: column;

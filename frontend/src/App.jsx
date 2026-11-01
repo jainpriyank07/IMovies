@@ -100,6 +100,7 @@ function App() {
 
       alert(data.message);
       setBookingForm({ showtime: '18:30', seats: '2' });
+      fetchMovies();
       loadBookings();
     } catch (error) {
       alert(error.response?.data?.message || 'Booking failed.');
@@ -162,6 +163,7 @@ function App() {
                     <span>⭐ {movie.rating}</span>
                     <strong>₹{movie.price}</strong>
                   </div>
+                  <div className="availability-tag">{movie.availableSeats} seats left</div>
                 </div>
               </button>
             ))}
@@ -179,6 +181,7 @@ function App() {
                 <span>{selectedMovie.duration}</span>
                 <span>⭐ {selectedMovie.rating}</span>
               </div>
+              <div className="availability-badge">Real-time availability: {selectedMovie.availableSeats} seats left</div>
 
               <form onSubmit={handleBookingSubmit} className="booking-form">
                 <label>
